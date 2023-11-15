@@ -43,8 +43,10 @@ function App() {
         <Alert alert={alert} />
         <div className="container my-3">
           <Routes>
-            <Route path="/about" element={<About />} />
-            <Route path="/" element={<TextForm showAlert={showAlert} heading="Enter text to Analyze" mode={mode} />} />
+            {/* /users --> componenet1
+            /users/home --> component2 */}
+            <Route exact path="/about" element={<About />} />
+            <Route exact path="/" element={<TextForm showAlert={showAlert} heading="Enter text to Analyze" mode={mode} />} />
           </Routes>
         </div>
       </Router>
