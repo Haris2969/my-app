@@ -1,32 +1,55 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-// import About from './components/About';
+import About from './components/About';
 import Navbar from './components/Navbar';
 import TextForm from './components/TextForm';
-
+import Alert from './components/Alert';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 function App() {
-  const [mode , setMode] = useState('light')  //whether dark mode is on
+  const [mode, setMode] = useState('light'); // whether dark mode is on
+  const [alert, setAlert] = useState(null);
 
-  const toggleMode = () =>{
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1000);
+  };
 
-    if(mode === 'light'){
-      setMode('dark')
+  const toggleMode = () => {
+    if (mode === 'light') {
+      setMode('dark');
       document.body.style.backgroundColor = '#042743';
-    }else{
-      setMode('light')
+      showAlert("Dark mode is Enabled", "success");
+    } else {
+      setMode('light');
       document.body.style.backgroundColor = 'white';
+      showAlert("Light mode is Enabled", "success");
     }
-  }
+  };
+
   return (
- <> 
-<Navbar title="King 56" mode={mode} toggleMode ={toggleMode}/>
-<div className="container my-3">
-<TextForm heading="Enter text to Analyze"mode={mode}/>
-{/* <About/> */}
-</div>
-</>
- );
+    <>
+      <Router>
+        <Navbar title="King 56" mode={mode} toggleMode={toggleMode} />
+        <Alert alert={alert} />
+        <div className="container my-3">
+          <Routes>
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<TextForm showAlert={showAlert} heading="Enter text to Analyze" mode={mode} />} />
+          </Routes>
+        </div>
+      </Router>
+    </>
+  );
 }
 
 export default App;
